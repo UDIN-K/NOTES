@@ -1,22 +1,22 @@
 # Stellar Notes (Soroban Smart Contract)
 
-#contract ID
+# Contract ID
 CDJZHI2FM6TUJEZHRXW3BJANGXD74OLAR6ZXFBSUNINXBTZA7TI6W7FL
 
-Smart contract notes/todo sederhana di Stellar Soroban, ditulis dengan Rust.
+A simple notes/todo smart contract on Stellar Soroban, written in Rust.
 
-## Ringkasan
+## Overview
 
-Contract ini menyimpan data catatan/todo di on-chain storage dan menyediakan operasi utama:
+This contract stores note/todo data in on-chain storage and provides the following main operations:
 
-- Menambah catatan
-- Mengambil semua catatan
-- Mengubah status selesai/belum selesai
-- Menghapus catatan
+- Add a note
+- Get all notes
+- Toggle completion status
+- Delete a note
 
-Setiap catatan memiliki `id`, `content`, dan status `completed`.
+Each note has an `id`, `content`, and a `completed` status.
 
-## Struktur Proyek
+## Project Structure
 
 ```text
 .
@@ -30,45 +30,45 @@ Setiap catatan memiliki `id`, `content`, dan status `completed`.
             └── test.rs
 ```
 
-## Fitur Contract
+## Contract Features
 
 1. `add_note(env, content) -> String`
-   Menambah catatan baru dengan ID auto-increment (`1, 2, 3, ...`) dan status awal belum selesai.
+   Adds a new note with an auto-incrementing ID (`1, 2, 3, ...`) and an initial incomplete status.
 
 2. `get_notes(env) -> Vec<Note>`
-   Mengambil semua catatan dari storage.
+   Retrieves all notes from storage.
 
 3. `toggle_note(env, id) -> String`
-   Mengubah status `completed` dari `false` ke `true` (atau sebaliknya).
+   Toggles the `completed` status from `false` to `true` (or vice versa).
 
 4. `delete_note(env, id) -> String`
-   Menghapus catatan berdasarkan ID.
+   Deletes a note by its ID.
 
-## Struktur Data
+## Data Structure
 
 ```rust
 pub struct Note {
     pub id: u64,
-   pub content: String,
-   pub completed: bool,
+    pub content: String,
+    pub completed: bool,
 }
 ```
 
-## Prasyarat
+## Prerequisites
 
 - Rust toolchain
 - `cargo`
 - Stellar CLI (`stellar`)
 
-## Menjalankan Project
+## Running the Project
 
-Di root repository:
+In the repository root:
 
 ```bash
 make -C contracts/notes build
 ```
 
-Menjalankan test:
+Run tests:
 
 ```bash
 make -C contracts/notes test
@@ -80,14 +80,15 @@ Format code:
 make -C contracts/notes fmt
 ```
 
-## Catatan Implementasi
+## Implementation Notes
 
-- Data catatan disimpan dengan key instance storage: `NOTE_DATA`.
-- Counter ID disimpan dengan key `NEXT_ID` agar ID konsisten dan tidak random.
-- Saat catatan dihapus, ID tidak didaur ulang (tetap monotonic).
+- Note data is stored using the instance storage key: `NOTE_DATA`.
+- The ID counter is stored with the key `NEXT_ID` to keep IDs consistent and not random.
+- When a note is deleted, its ID is not recycled (remains monotonic).
 
-## Rencana Lanjutan (Opsional)
+## Future Plans (Optional)
 
-- Menambahkan validasi input (`content` tidak kosong)
-- Menambahkan event log untuk setiap aksi
-- Menambahkan test unit yang lengkap di `test.rs`
+- Add input validation (`content` cannot be empty)
+- Add event logs for every action
+- Add comprehensive unit tests in `test.rs`
+- 
